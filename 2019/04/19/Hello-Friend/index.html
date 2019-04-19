@@ -216,8 +216,107 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h1 id="你好，亲爱的朋友"><a href="#你好，亲爱的朋友" class="headerlink" title="你好，亲爱的朋友"></a>你好，亲爱的朋友</h1><p>永远相信美好的事情即将发生，而此刻就在发生</p>
-
+      <h1 id="hexo-github搭建个人博客网站"><a href="#hexo-github搭建个人博客网站" class="headerlink" title="hexo + github搭建个人博客网站"></a>hexo + github搭建个人博客网站</h1><p><strong>导读：</strong>博客除了知道得CSDN，博客园之类的。很多都有自己专属的个人博客。昨天花了一下午加一晚上的时间搭建好。依托的是gitHub pages服务+hexo来搭建。使用github pages服务搭建博客的好处是访问速度快（全是静态文件）、免费搭建、不需要服务器和后台、绑定域名方便。趁热打铁，整理出我的搭建指南，欢迎收藏。话不多说，开始正篇。</p>
+<p>搭建流程：</p>
+<p><img src="C:\Users\HUI\Desktop\java语言的自我介绍-1.png" alt="java语言的自我介绍-1"></p>
+<h2 id="一、搭建所需环境的配置"><a href="#一、搭建所需环境的配置" class="headerlink" title="一、搭建所需环境的配置"></a>一、搭建所需环境的配置</h2><p>1、注册GitHub账号</p>
+<p>说明：个人博客是依托于GitHub pages服务</p>
+<p>2、安装node.js</p>
+<p>说明：node.js是为了后面下载安装使用hexo(博客搭建框架)。</p>
+<p><strong>说明：</strong>方便与GitHub配合使用来进行代码的托管，<font color="red"><strong>后面的所有指令都是在git上来输入。</strong></font></p>
+<h2 id="二、搭建github博客"><a href="#二、搭建github博客" class="headerlink" title="二、搭建github博客"></a>二、搭建github博客</h2><p>在github上创建仓库，新建一个（必须）名为 用户名.github.io的仓库。例如：我的用户名为SailSpring，则创建SailSpring.github.io的仓库，将来博客的访问网址就是<a href="http://sailspring.github.io/。" target="_blank" rel="noopener">http://sailspring.github.io/。</a></p>
+<p><strong>说明：</strong>每一个github账户只能创建一个这样可以直接使用域名访问的仓库</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>GitHub的注册邮箱要验证</li>
+<li>仓库名必须为：用户名.github.io</li>
+</ul>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555677698035.png" alt="1555677698035"></p>
+<p>此时(<strong>一般仓库创建并可以访问需要10分钟左右</strong>)就可以通过域名http://用户名.github.io/进行访问，但里面没有内容，会报404</p>
+<h2 id="三、配置SSH-key"><a href="#三、配置SSH-key" class="headerlink" title="三、配置SSH key"></a>三、配置SSH key</h2><p>配置ssh key是为了提交代码时要拥有你的GitHub权限才可以，直接使用用户名，密码不安全，使用ssh key解决本地和服务器的连接问题。</p>
+<p>1、检查本机是否已存在ssh密钥，提示No such file or directory 说明第一次使用git。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/. ssh</span><br></pre></td></tr></table></figure>
+<p>2、连续按3次回车，会在用户根目录生成  .ssh/id_rsa的文件，用记事本打开后，复制。</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555678101124.png" alt="1555678101124"></p>
+<p>3、打开GitHub主页，进入setting—&gt;SSH and GPG keys——&gt;New SSH key,将复制的内容粘贴到key，title可以自己定义,然后点击Add SSH key即可。</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555678372306.png" alt="1555678372306"></p>
+<p>4、测试SSH Key是否配置成功</p>
+<ul>
+<li>输入:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>会出现如下提示，输入yes即可：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Are you sure you want to continue connecting (yes/no)?</span><br></pre></td></tr></table></figure>
+<ul>
+<li>看到如下信息说明SSH配置成功</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi SailSpring（用户名）! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>此时还需要配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;SailSpring&quot;// github用户名，非昵称</span><br><span class="line">$ git config --global user.email  &quot;xxx@**.com&quot;// 你的github注册邮箱</span><br></pre></td></tr></table></figure>
+<h2 id="四、使用hexo写博客"><a href="#四、使用hexo写博客" class="headerlink" title="四、使用hexo写博客"></a>四、使用hexo写博客</h2><h3 id="4-1-hexo简介"><a href="#4-1-hexo简介" class="headerlink" title="4.1 hexo简介"></a>4.1 hexo简介</h3><p>主页：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">https://hexo.io/zh-cn/</a></p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555679362296.png" alt="1555679362296"></p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555679401597.png" alt="1555679401597"></p>
+<p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a href="http://daringfireball.net/projects/markdown/" target="_blank" rel="noopener">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
+<p>Hexo是一个简单、快速、强大的基于 Github Pages 的博客发布工具，支持Markdown格式，有众多优秀插件和主题。</p>
+<h3 id="4-2-hexo原理"><a href="#4-2-hexo原理" class="headerlink" title="4.2  hexo原理"></a>4.2  hexo原理</h3><p>GitHub pages存放的都是静态文件。hexo所做的是将md格式的文件都放在本地，每次写完文章后调用命令来批量生成页面，然后将有改动的页面提交到GitHub。实现动态内容，不需要手动去更新博文目录和相关链接信息。</p>
+<h3 id="4-3-hexo安装（在git客户端上输入命令）"><a href="#4-3-hexo安装（在git客户端上输入命令）" class="headerlink" title="4.3 hexo安装（在git客户端上输入命令）"></a>4.3 hexo安装（在git客户端上输入命令）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo</span><br></pre></td></tr></table></figure>
+<h3 id="4-4-初始化"><a href="#4-4-初始化" class="headerlink" title="4.4 初始化"></a>4.4 初始化</h3><p>在本地创建一个文件夹，这个文件夹是用来存放代码的地方，文件夹名可以自己定义：比如我的是 D：\Workspaces\hexo</p>
+<p>在git客户端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /d/Workspaces/hexo/</span><br><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+<p>此时hexo会下载博客页面所需文件到该目录：</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555680515361.png" alt="1555680515361"></p>
+<p>输入如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g # 生成</span><br><span class="line">$ hexo s # 启动服务</span><br></pre></td></tr></table></figure>
+<p>hexo会在public文件夹下生成相关的html文件，这些文件都是要提交到GitHub上去：</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555680686875.png" alt="1555680686875"></p>
+<p><strong>说明：</strong>hexo s是开启本地预览服务，输入 <a href="http://localhost:4000即可访问，如果加载不出来就是端口号被占用，修改端口号即可" target="_blank" rel="noopener">http://localhost:4000即可访问，如果加载不出来就是端口号被占用，修改端口号即可</a></p>
+<p>如下为hexo自带的主体渲染出的页面：</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555681174860.png" alt="1555681174860"></p>
+<h3 id="4-5-主题的下载与修改"><a href="#4-5-主题的下载与修改" class="headerlink" title="4.5 主题的下载与修改"></a>4.5 主题的下载与修改</h3><p>个人博客网站，那就要按照个人的审美去选出自己喜欢的主题，那一起来选一个好看的主题：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a></p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555687887859.png" alt="1555687887859"></p>
+<p><strong>比如选定ARIA主题，点眼睛图标预览，点底下蓝色的字，即可进到GitHub的clone页面，复制克隆地址</strong></p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555687940449.png" alt="1555687940449"></p>
+<p>利用命令行下载主题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /d/Workspaces/hexo/</span><br><span class="line">$ git clone https://github.com/dongyuanxin/theme-bmw.git themes/bmw</span><br></pre></td></tr></table></figure>
+<p>下载好后主题都在hexo文件夹下的themes里面：</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555687987375.png" alt="1555687987375"></p>
+<p>修改hexo文件夹下的_config.yml中的theme: landscape 改为 theme: bmw，保存。这里注意，必须加空格在theme和后面主题名之间。</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555686372454.png" alt="1555686372454"></p>
+<p>执行hexo g重新渲染生成，hexo s运行并预览。（如果出现问题，可使用hexo clean 命令是用来清理public中的内容，重新生成发布）</p>
+<h3 id="4-6-上传"><a href="#4-6-上传" class="headerlink" title="4.6 上传"></a>4.6 上传</h3><p>说明：hexo提交代码时会将以前的所有代码都删掉，上传代码之前记得养成下载的习惯。(虽然GitHub有版本管理，但要养成备份的习惯)</p>
+<p><strong>上传之前将hexo文件夹下的_config.yml中的deploy部分，</strong>：与内容之间要加空格：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:SailSpring/SailSpring.github.io.git    //根据自己的名称定义</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p><strong>并安装插件：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /d/Workspaces/hexo/</span><br><span class="line">npm install hexo-deployer-git</span><br></pre></td></tr></table></figure>
+<p><strong>最后输入hexo d会将有改动的代码全部提交。</strong></p>
+<p><strong>浏览器输入网址</strong>：https://用户名.github.io/ 即可查看效果</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555688298512.png" alt="1555688298512"></p>
+<h3 id="4-7-写博客"><a href="#4-7-写博客" class="headerlink" title="4.7 写博客"></a>4.7 写博客</h3><p>定位到hexo目录，执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;Hello Friend&quot;</span><br></pre></td></tr></table></figure>
+<p>就会在…/hexo/source/_posts下生成相关的md格式的文件：</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555688573694.png" alt="1555688573694"></p>
+<p>打开这个文件，就可以写博客了（推荐一个markdown编辑器Typora）,默认生成内容如下：（也可以直接新建md格式的文件，这个命令的好处是自动生成时间）</p>
+<p>进行编辑，在合适的位置加上<code>&lt;!--more--&gt;</code>，可以设置文章摘要的长度，不会将博文目录显示全部文章内容</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555688802557.png" alt="1555688802557"></p>
+<p>然后渲染并上传</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<p>效果如下:</p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555689800239.png" alt="1555689800239"></p>
+<p><img src="C:\Users\HUI\AppData\Roaming\Typora\typora-user-images\1555689662508.png" alt="1555689662508"></p>
+<p><strong>自此我们的博客就搭建完了。</strong>可通过域名 https://用户名.github.io/ 进行访问</p>
+<h3 id="4-7-补充"><a href="#4-7-补充" class="headerlink" title="4.7 补充"></a>4.7 补充</h3><p>对于要想更熟练的使用推荐的markdown编辑器Typora推荐阅读博客<a href="https://blog.csdn.net/mingzhuo_126/article/details/79941450" target="_blank" rel="noopener">https://blog.csdn.net/mingzhuo_126/article/details/79941450</a></p>
+<p>还有就是熟练hexo的基本操作命令：</p>
+<p><strong>hexo常见命令：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;postName&quot; #新建文章</span><br><span class="line">hexo new page &quot;pageName&quot; #新建页面</span><br><span class="line">hexo generate #生成静态页面至public目录</span><br><span class="line">hexo server #开启预览访问端口（默认端口4000，&apos;ctrl + c&apos;关闭server）</span><br><span class="line">hexo deploy #部署到GitHub</span><br><span class="line">hexo help  # 查看帮助</span><br><span class="line">hexo version  #查看Hexo的版本</span><br></pre></td></tr></table></figure>
+<p><strong>缩写：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo n == hexo new</span><br><span class="line">hexo g == hexo generate</span><br><span class="line">hexo s == hexo server</span><br><span class="line">hexo d == hexo deploy</span><br></pre></td></tr></table></figure>
+<p>组合命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo s -g #生成并本地预览</span><br><span class="line">hexo d -g #生成并上传</span><br></pre></td></tr></table></figure>
+<h2 id="五、购买绑定域名"><a href="#五、购买绑定域名" class="headerlink" title="五、购买绑定域名"></a>五、购买绑定域名</h2>
     </div>
   </div>
   
